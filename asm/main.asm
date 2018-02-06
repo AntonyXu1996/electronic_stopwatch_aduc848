@@ -1,10 +1,10 @@
-;³£Á¿¶¨Òå
+;å¸¸é‡å®šä¹‰
 T0_COUNTERH		EQU	00H
 T0_COUNTERL		EQU	00H
 T1_COUNTERH		EQU	00H
 T1_COUNTERL		EQU	00H
 
-;×Ö½ÚµØÖ·¶¨Òå
+;å­—èŠ‚åœ°å€å®šä¹‰
 PARA1			EQU	70H
 PARA2			EQU	71H
 
@@ -16,7 +16,7 @@ TIMER_S			EQU	31H
 TIMER_MIN		EQU	32H
 TIMER_COUNT		EQU	36H
 
-;Î»Ñ°Ö·¶¨Òå
+;ä½å¯»å€å®šä¹‰
 LCD1602_RS		EQU P3.6
 LCD1602_RW		EQU P3.5
 LCD1602_EN		EQU P3.3
@@ -36,30 +36,30 @@ ORG	001BH
 	
 ORG	0033H
 MAIN:
-	;¸ü¸ÄPLLCONÊ¹×ÜÏßÆµÂÊ±¶ÆµÖÁ12.58MHz
+	;æ›´æ”¹PLLCONä½¿æ€»çº¿é¢‘çŽ‡å€é¢‘è‡³12.58MHz
 	MOV		0xD7,#0F8H
 	
-	;±äÁ¿³õÊ¼»¯
+	;å˜é‡åˆå§‹åŒ–
 	MOV		SP,#08H
 	ACALL	Clear0
 	CLR		LCD_UPDATE_FLAG
 	MOV		R3,#8
 	
-	;³õÊ¼»¯LCD1602
+	;åˆå§‹åŒ–LCD1602
 	ACALL	LCD1602_INIT
 	
-	;³õÊ¼»¯¶¨Ê±Æ÷
+	;åˆå§‹åŒ–å®šæ—¶å™¨
 	MOV		TMOD,#11H
 	MOV		TH0,#T0_COUNTERH
 	MOV		TL0,#T0_COUNTERL
 	MOV		TH1,#T1_COUNTERH
 	MOV		TL1,#T1_COUNTERL
-	MOV		IE,#8AH			;´ò¿ªÈ«¾ÖÖÐ¶ÏºÍÁ½¸ö¶¨Ê±Æ÷ÖÐ¶Ï
+	MOV		IE,#8AH			;æ‰“å¼€å…¨å±€ä¸­æ–­å’Œä¸¤ä¸ªå®šæ—¶å™¨ä¸­æ–­
 	CLR		TR0
 	SETB	TR1
 	
 LOOP:
-	;----------LCDÏÔÊ¾Ë¢ÐÂ----------
+	;----------LCDæ˜¾ç¤ºåˆ·æ–°----------
 	JNB		LCD_UPDATE_FLAG,LOOP
 	CLR		LCD_UPDATE_FLAG
 	
@@ -128,10 +128,10 @@ LOOP:
 	JMP		LOOP
 	
 	
-;*****************************×Ó³ÌÐò²¿·Ö*****************************
+;*****************************å­ç¨‹åºéƒ¨åˆ†*****************************
 
 ;==================================
-;				ÇåÁã
+;				æ¸…é›¶
 ;==================================
 Clear0:
 	MOV		KEY_Cont,#0FFH
@@ -144,9 +144,9 @@ Clear0:
 	
 	
 ;==================================
-;		¼ÆÊýÖµ×ª»»Îª10MSµÄÖµ
+;		è®¡æ•°å€¼è½¬æ¢ä¸º10MSçš„å€¼
 ;==================================
-COUNTER2MS:;²ÎÊý1£ºÊäÈëµÄ¼ÆÊýÖµ£¬·µ»Ø²ÎÊý1
+COUNTER2MS:;å‚æ•°1ï¼šè¾“å…¥çš„è®¡æ•°å€¼ï¼Œè¿”å›žå‚æ•°1
 	MOV		A,PARA1
 	MOV		DPTR,#TAB
 	MOVC	A,@A+DPTR
@@ -166,25 +166,25 @@ TAB:	DB	 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9
 		DB	89,90,90,91,91,92,92,93,93,94,94,95,95,96,96,97,97,98,98,99,99
 	
 	
-;*****************************ÖÐ¶Ï·þÎñ³ÌÐò²¿·Ö*****************************
+;*****************************ä¸­æ–­æœåŠ¡ç¨‹åºéƒ¨åˆ†*****************************
 
 ;==================================
-;		¶¨Ê±Æ÷0ÖÐ¶Ï·þÎñ³ÌÐò
+;		å®šæ—¶å™¨0ä¸­æ–­æœåŠ¡ç¨‹åº
 ;==================================
 T0ISR:
-	;ÖØÐÂÔØÈë³õÖµ
+	;é‡æ–°è½½å…¥åˆå€¼
 	CLR		TR0
 	MOV		TH0,#T0_COUNTERH
 	MOV		TL0,#T0_COUNTERL
 	SETB	TR0
 	
-	;Êý¾Ý´æÈë¶ÑÕ»
+	;æ•°æ®å­˜å…¥å †æ ˆ
 	CLR		EA
 	PUSH	PSW
 	PUSH	ACC
 	SETB	EA
 	
-	;Ôö¼Ó¼ÆÊýÖµ
+	;å¢žåŠ è®¡æ•°å€¼
 	INC		TIMER_COUNT
 	MOV		A,TIMER_COUNT
 	CJNE	A,#192,t0_conver
@@ -199,7 +199,7 @@ T0ISR:
 	MOV		TIMER_MIN,#0
 	
 t0_conver:
-	;Êý¾Ý¶Á³ö¶ÑÕ»
+	;æ•°æ®è¯»å‡ºå †æ ˆ
 	CLR		EA
 	POP		ACC
 	POP		PSW
@@ -209,29 +209,29 @@ t0_conver:
 	
 	
 ;==================================
-;		¶¨Ê±Æ÷1ÖÐ¶Ï·þÎñ³ÌÐò
+;		å®šæ—¶å™¨1ä¸­æ–­æœåŠ¡ç¨‹åº
 ;==================================
 T1ISR:
-	;ÖØÐÂÔØÈë³õÖµ
+	;é‡æ–°è½½å…¥åˆå€¼
 	CLR		TR1
 	MOV		TH1,#T1_COUNTERH
 	MOV		TL1,#T1_COUNTERL
 	SETB	TR1
 	
-	;Êý¾Ý´æÈë¶ÑÕ»
+	;æ•°æ®å­˜å…¥å †æ ˆ
 	CLR		EA
 	PUSH	PSW
 	PUSH	ACC
 	SETB	EA
 	
-	;°Ë·ÖÆµ
+	;å…«åˆ†é¢‘
 	DJNZ	R3,t1_over
 	MOV		R3,#8
 	
-	;¸üÐÂÒº¾§ÏÔÊ¾
+	;æ›´æ–°æ¶²æ™¶æ˜¾ç¤º
 	SETB	LCD_UPDATE_FLAG
 	
-	;É¨Ãè¼üÅÌ
+	;æ‰«æé”®ç›˜
 	ACALL	KEYBOARD_UPDATE
 	
 	MOV		A,KEY_TrgP
@@ -245,7 +245,7 @@ no_motion1:
 no_motion2:
 t1_over:
 
-	;Êý¾Ý¶Á³ö¶ÑÕ»
+	;æ•°æ®è¯»å‡ºå †æ ˆ
 	CLR		EA
 	POP		ACC
 	POP		PSW
@@ -254,12 +254,12 @@ t1_over:
 	RETI
 	
 
-;*****************************»ù±¾Í¨ÓÃº¯Êý²¿·Ö*****************************
+;*****************************åŸºæœ¬é€šç”¨å‡½æ•°éƒ¨åˆ†*****************************
 
 ;==================================
-;			msÑÓ³Ù³ÌÐò
+;			mså»¶è¿Ÿç¨‹åº
 ;==================================
-DELAYMS:;²ÎÊý1£ºÑÓ³ÙµÄÑ­»·ÊýÁ¿
+DELAYMS:;å‚æ•°1ï¼šå»¶è¿Ÿçš„å¾ªçŽ¯æ•°é‡
 delayms1:
 	MOV		R7,#230
 delayms2:
@@ -271,13 +271,13 @@ delayms2:
 	RET
 	
 	
-;*****************************°´¼üÉ¨Ãè²¿·Ö*****************************
+;*****************************æŒ‰é”®æ‰«æéƒ¨åˆ†*****************************
 
 ;==================================
-;		°´¼üÉ¨Ãè¸üÐÂ³ÌÐò
+;		æŒ‰é”®æ‰«ææ›´æ–°ç¨‹åº
 ;==================================
 KEYBOARD_UPDATE:
-	;µÍËÄÎ»×¼±¸ÊäÈë
+	;ä½Žå››ä½å‡†å¤‡è¾“å…¥
 	ANL		P1,#0F0H
 	MOV		A,P1
 	CPL		A
@@ -290,50 +290,50 @@ KEYBOARD_UPDATE:
 	RET
 
 		
-;*****************************LCD1602Çý¶¯²¿·Ö*****************************
+;*****************************LCD1602é©±åŠ¨éƒ¨åˆ†*****************************
 
 ;==================================
-;		LCD1602³õÊ¼»¯³ÌÐò
+;		LCD1602åˆå§‹åŒ–ç¨‹åº
 ;==================================
 LCD1602_INIT:
 	CLR		LCD1602_BUSY
 	CLR		LCD1602_RW
 	CLR		LCD1602_EN
-	;ÑÓ³Ù15ms
+	;å»¶è¿Ÿ15ms
 	MOV 	PARA1,#15
 	ACALL	DELAYMS
-	;Ö¸Áî 38H
+	;æŒ‡ä»¤ 38H
 	MOV 	PARA1,#0
 	MOV 	PARA2,#38H
 	ACALL	LCD1602_Write
-	;ÑÓ³Ù5ms
+	;å»¶è¿Ÿ5ms
 	MOV 	PARA1,#5
 	ACALL	DELAYMS
-	;Ö¸Áî 38H
+	;æŒ‡ä»¤ 38H
 	MOV 	PARA1,#0
 	MOV 	PARA2,#38H
 	ACALL	LCD1602_Write
-	;ÑÓ³Ù5ms
+	;å»¶è¿Ÿ5ms
 	MOV 	PARA1,#5
 	ACALL	DELAYMS
-	;Ö¸Áî 38H
+	;æŒ‡ä»¤ 38H
 	MOV 	PARA1,#0
 	MOV 	PARA2,#38H
 	ACALL	LCD1602_Write
 	SETB	LCD1602_BUSY
-	;Ö¸Áî 38H
+	;æŒ‡ä»¤ 38H
 	MOV 	PARA1,#0
 	MOV 	PARA2,#38H
 	ACALL	LCD1602_Write
-	;Ö¸Áî 08H
+	;æŒ‡ä»¤ 08H
 	MOV 	PARA1,#0
 	MOV 	PARA2,#08H
 	ACALL	LCD1602_Write
-	;Ö¸Áî 06H
+	;æŒ‡ä»¤ 06H
 	MOV 	PARA1,#0
 	MOV 	PARA2,#06H
 	ACALL	LCD1602_Write
-	;Ö¸Áî 0cH
+	;æŒ‡ä»¤ 0cH
 	MOV 	PARA1,#0
 	MOV 	PARA2,#0CH
 	ACALL	LCD1602_Write
@@ -342,9 +342,9 @@ LCD1602_INIT:
 		
 
 ;==================================
-;		LCD1602Ð´ÈëÃüÁî
+;		LCD1602å†™å…¥å‘½ä»¤
 ;==================================	
-LCD1602_Write:;²ÎÊý1£ºÃüÁî/Êý¾Ý£¬²ÎÊý2£ºÄÚÈÝ
+LCD1602_Write:;å‚æ•°1ï¼šå‘½ä»¤/æ•°æ®ï¼Œå‚æ•°2ï¼šå†…å®¹
 	ACALL  LCD1602_CHECKBUSY
 lcd1602_write0:
 	CLR 	LCD1602_EN
@@ -353,12 +353,12 @@ lcd1602_write0:
 	MOV		LCD1602_RS,C
 	CLR 	LCD1602_RW
 	MOV		P0,PARA2
-	;ÑÓ³Ù1ms
+	;å»¶è¿Ÿ1ms
 	MOV 	PARA1,#1
 	ACALL	DELAYMS
-	;²úÉú¸ßÂö³å
+	;äº§ç”Ÿé«˜è„‰å†²
 	SETB	LCD1602_EN
-	;ÑÓ³Ù1ms
+	;å»¶è¿Ÿ1ms
 	MOV 	PARA1,#1
 	ACALL	DELAYMS
 	CLR		LCD1602_EN
@@ -367,17 +367,17 @@ lcd1602_write0:
 			
 
 ;==================================
-;		LCD1602ÉèÖÃ¹â±ê³ÌÐò
+;		LCD1602è®¾ç½®å…‰æ ‡ç¨‹åº
 ;==================================	
-LCD1602_SetCursor:;²ÎÊý1£ºÎ»ÖÃ
-	;ÆÁÄ»×Ö·ûÎ»ÖÃ·ÖÎª0-31¹²32¸öÎ»ÖÃ
-	;Ïê¼ûÊý¾ÝÊÖ²á£ºÊý¾ÝÖ¸ÕëÉèÖÃ
+LCD1602_SetCursor:;å‚æ•°1ï¼šä½ç½®
+	;å±å¹•å­—ç¬¦ä½ç½®åˆ†ä¸º0-31å…±32ä¸ªä½ç½®
+	;è¯¦è§æ•°æ®æ‰‹å†Œï¼šæ•°æ®æŒ‡é’ˆè®¾ç½®
 	MOV		A,PARA1
 	SETB	ACC.7
 	MOV		C,ACC.4
 	MOV		ACC.6,C
 	CLR		ACC.4
-	;Ö¸Áî£ºÉèÖÃ¹â±ê
+	;æŒ‡ä»¤ï¼šè®¾ç½®å…‰æ ‡
 	MOV 	PARA1,#0
 	MOV 	PARA2,A
 	ACALL	LCD1602_Write
@@ -386,11 +386,11 @@ LCD1602_SetCursor:;²ÎÊý1£ºÎ»ÖÃ
 	
 
 ;==================================
-;		LCD1602Ð´Èë×Ö·û³ÌÐò
+;		LCD1602å†™å…¥å­—ç¬¦ç¨‹åº
 ;==================================	
-LCD1602_PrintChar:;²ÎÊý1£º×Ö·û
+LCD1602_PrintChar:;å‚æ•°1ï¼šå­—ç¬¦
 	PUSH	PARA1
-	;Ö¸Áî£ºÊä³öÊý¾Ý
+	;æŒ‡ä»¤ï¼šè¾“å‡ºæ•°æ®
 	MOV 	PARA1,#1
 	POP		PARA2
 	ACALL	LCD1602_Write
@@ -399,7 +399,7 @@ LCD1602_PrintChar:;²ÎÊý1£º×Ö·û
 	
 	
 ;==================================
-;		LCD1602ÅÐÃ¦³ÌÐò
+;		LCD1602åˆ¤å¿™ç¨‹åº
 ;==================================	
 LCD1602_CHECKBUSY:
 	JNB		LCD1602_BUSY,lcd1602_checkbusy1
